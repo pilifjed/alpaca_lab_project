@@ -1,0 +1,34 @@
+module main
+
+export hello/0, filter/2, greater/2, smaller/2, qsort/1, join/2
+
+let hello = "hello world"
+
+let greater a b = a>b
+
+let smaller a b = a<b
+
+let join b a =
+    match a with
+    [] -> b
+    | _ -> 
+        match b with
+        [] -> a
+        | hb :: tb -> hb :: (join tb a)
+
+let join_three a b c =
+    join a (join b c)
+
+
+let filter fun list = 
+    match list with
+    [] -> []
+    | head :: tail -> 
+        match (fun head) with
+        false -> (filter fun tail)
+        | true -> head :: (filter fun tail)
+
+let qsort list =    
+    match list with 
+    [] -> []
+    | pivot :: tail ->  join_three (qsort (filter (greater pivot) tail)) [pivot] (qsort (filter (smaller pivot) tail))
